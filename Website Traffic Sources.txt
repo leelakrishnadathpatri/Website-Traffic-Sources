@@ -1,0 +1,87 @@
+#include <stdio.h>
+
+#define MAX_SOURCES 10
+
+int main()
+{
+    int n, i, totalVisitors = 0;
+    int visitors[MAX_SOURCES];
+    float percentage[MAX_SOURCES];
+    char sources[MAX_SOURCES][50];
+    int maxIndex = 0;
+
+    printf("====================================\n");
+    printf("     WEBSITE TRAFFIC SOURCE ANALYSIS\n");
+    printf("====================================\n");
+
+    printf("Enter number of traffic sources (1-%d): ",
+           MAX_SOURCES);
+
+    if (scanf("%d", &n) != 1 ||
+        n < 1 || n > MAX_SOURCES)
+    {
+        printf("Invalid number of sources!\n");
+        return 1;
+    }
+
+    for (i = 0; i < n; i++)
+    {
+        printf("\nEnter traffic source %d name: ", i + 1);
+        scanf(" %49[^\n]", sources[i]);
+
+        printf("Enter visitors from %s: ", sources[i]);
+
+        if (scanf("%d", &visitors[i]) != 1 ||
+            visitors[i] < 0)
+        {
+            printf("Invalid visitor count!\n");
+            return 1;
+        }
+
+        totalVisitors += visitors[i];
+    }
+
+    printf("\n====================================\n");
+    printf("          TRAFFIC REPORT\n");
+    printf("====================================\n");
+
+    printf("%-20s %-12s %-12s\n",
+           "Traffic Source", "Visitors", "Percentage");
+    printf("------------------------------------\n");
+
+    for (i = 0; i < n; i++)
+    {
+        if (totalVisitors > 0)
+            percentage[i] =
+                (float)visitors[i] / totalVisitors * 100;
+        else
+            percentage[i] = 0;
+
+        printf("%-20s %-12d %8.2f%%\n",
+               sources[i], visitors[i], percentage[i]);
+
+        if (visitors[i] > visitors[maxIndex])
+            maxIndex = i;
+    }
+
+    printf("------------------------------------\n");
+    printf("Total Visitors: %d\n", totalVisitors);
+
+    if (totalVisitors > 0)
+    {
+        printf("Top Traffic Source: %s\n",
+               sources[maxIndex]);
+        printf("Visitors from Top Source: %d\n",
+               visitors[maxIndex]);
+        printf("Top Source Percentage: %.2f%%\n",
+               percentage[maxIndex]);
+    }
+    else
+    {
+        printf("No website traffic recorded.\n");
+    }
+
+    printf("====================================\n");
+
+    return 0;
+}
